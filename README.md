@@ -26,6 +26,8 @@ Aplicación Streamlit para analizar ejecuciones de procesos, visualizar tiempos 
 
 ## Desplegar en Streamlit Community Cloud
 
+> **Importante:** la app todavía no requiere autenticación y permite cargar y eliminar datos de Supabase. Streamlit Community Cloud publica la app; que el repositorio de GitHub sea privado no hace privada la aplicación. No la despliegues con datos reales hasta agregar control de acceso o elegir un alojamiento privado.
+
 1. Sube este proyecto a un repositorio de GitHub.
 2. En Streamlit Community Cloud, crea una app desde ese repositorio y selecciona `app.py` como archivo principal.
 3. En **Settings → Secrets**, configura `SUPABASE_URL` y, si utilizarás el análisis con IA, `GEMINI_API_KEY` (o `GOOGLE_API_KEY`). No subas `.env` ni claves al repositorio.
