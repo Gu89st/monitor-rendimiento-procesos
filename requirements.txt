@@ -3,6 +3,7 @@ pandas
 plotly
 python-dotenv
 SQLAlchemy
+psycopg[binary]
 psycopg2-binary
 openpyxl
 google-genai
