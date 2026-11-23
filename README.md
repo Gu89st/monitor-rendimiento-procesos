@@ -14,9 +14,10 @@ Aplicación Streamlit para analizar ejecuciones de procesos, visualizar tiempos 
 
    ```dotenv
    SUPABASE_URL=tu_url_de_conexion_a_supabase
+   APP_PASSWORD=una_contrasena_aleatoria_larga
    ```
 
-   Para habilitar el análisis con IA, agrega también `GEMINI_API_KEY`. `GOOGLE_API_KEY` es una alternativa. `GEMINI_MODEL` y `GEMINI_FALLBACK_MODELS` son opcionales.
+   Sustituye `APP_PASSWORD` por una contraseña aleatoria de al menos 16 caracteres. Para habilitar el análisis con IA, agrega también `GEMINI_API_KEY`. `GOOGLE_API_KEY` es una alternativa. `GEMINI_MODEL` y `GEMINI_FALLBACK_MODELS` son opcionales.
 
 3. Inicia la aplicación:
 
@@ -26,8 +27,8 @@ Aplicación Streamlit para analizar ejecuciones de procesos, visualizar tiempos 
 
 ## Desplegar en Streamlit Community Cloud
 
-> **Importante:** la app todavía no requiere autenticación y permite cargar y eliminar datos de Supabase. Streamlit Community Cloud publica la app; que el repositorio de GitHub sea privado no hace privada la aplicación. No la despliegues con datos reales hasta agregar control de acceso o elegir un alojamiento privado.
+> **Importante:** la URL de Streamlit Community Cloud es pública, aunque el repositorio sea privado. La app exige `APP_PASSWORD` para acceder y permite cargar y eliminar datos de Supabase; configura una contraseña aleatoria de al menos 16 caracteres y compártela solo con usuarios autorizados.
 
 1. Sube este proyecto a un repositorio de GitHub.
 2. En Streamlit Community Cloud, crea una app desde ese repositorio y selecciona `app.py` como archivo principal.
-3. En **Settings → Secrets**, configura `SUPABASE_URL` y, si utilizarás el análisis con IA, `GEMINI_API_KEY` (o `GOOGLE_API_KEY`). No subas `.env` ni claves al repositorio.
+3. En **Settings → Secrets**, configura `APP_PASSWORD`, `SUPABASE_URL` y, si utilizarás el análisis con IA, `GEMINI_API_KEY` (o `GOOGLE_API_KEY`). No subas `.env` ni claves al repositorio.

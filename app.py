@@ -1,3 +1,4 @@
+import hmac
 import math
 import os
 import re
@@ -20,6 +21,41 @@ except ImportError:
 
 # Configuración de página
 st.set_page_config(page_title="Monitor de Rendimiento de Procesos", layout="wide")
+
+BASE_DIR = Path(__file__).resolve().parent
+load_dotenv(BASE_DIR / ".env")
+
+
+def get_config_value(name, default=None):
+    value = os.getenv(name)
+    if value:
+        return value
+    try:
+        return st.secrets.get(name, default)
+    except FileNotFoundError:
+        return default
+
+
+app_password = get_config_value("APP_PASSWORD")
+if not isinstance(app_password, str) or len(app_password) < 16:
+    st.error("Acceso bloqueado: configura APP_PASSWORD con al menos 16 caracteres en .env o en los secretos de la app.")
+    st.stop()
+
+if not st.session_state.get("acceso_autorizado", False):
+    st.title("Monitor de Rendimiento de Procesos")
+    with st.form("formulario_inicio_sesion"):
+        password_input = st.text_input("Contraseña de acceso", type="password")
+        iniciar_sesion = st.form_submit_button("Iniciar sesión")
+    if iniciar_sesion:
+        if hmac.compare_digest(password_input.encode("utf-8"), app_password.encode("utf-8")):
+            st.session_state["acceso_autorizado"] = True
+            st.rerun()
+        st.error("Contraseña incorrecta.")
+    st.stop()
+
+if st.sidebar.button("Cerrar sesión", key="cerrar_sesion"):
+    st.session_state["acceso_autorizado"] = False
+    st.rerun()
 
 # Aplicar reinicio diferido de filtros ANTES de instanciar cualquier widget
 if st.session_state.pop("_pendiente_reset_filtros", False):
@@ -54,10 +90,6 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
-
-# Cargar el archivo .env ubicado junto a app.py
-BASE_DIR = Path(__file__).resolve().parent
-load_dotenv(BASE_DIR / ".env")
 
 MESES_ES = {
     1: "Enero", 2: "Febrero", 3: "Marzo", 4: "Abril",
@@ -197,16 +229,6 @@ def aplicar_eje_entero(fig, eje="y"):
     else:
         fig.update_xaxes(**cfg)
     return fig
-
-
-def get_config_value(name, default=None):
-    value = os.getenv(name)
-    if value:
-        return value
-    try:
-        return st.secrets.get(name, default)
-    except FileNotFoundError:
-        return default
 
 
 @st.cache_resource
